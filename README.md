@@ -10,6 +10,6 @@ Desenvolver o controle de alto nível para o robô na plataforma MatLab.
 
 # Firmware
 <b>Os três arquivos estão relacionados para o ESP32</b>
-StepperControl.cpp	
-StepperControl.h	
+<br>StepperControl.cpp	<br/>
+<p>StepperControl.h<p/>	
 controle_robo_omnidirecional.ino
