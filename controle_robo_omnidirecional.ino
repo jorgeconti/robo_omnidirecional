@@ -101,8 +101,9 @@ WiFiClient client = server.available();
 void loop() {
   delay(1000);
 }
-////////////////////////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void taskWifi( void * parameter )
 {
@@ -114,33 +115,34 @@ void taskWifi( void * parameter )
   {
     vTaskDelayUntil( &xLastWakeTime, xDelay );// aplica um delay com controle de atraso
 
-    conectarClienteWIFI();
+    conectarClienteWIFI();            //conecta o wifi caso não esteja ativado.
 
-    if (client.connected())
+    if (client.connected())           // Quando houver um cliente conectado no wifi
     {
-      while (client.available())
+      while (client.available())      // e este cliente tiver dados de transmissão
       {
         enviarOdometriaClient = 1;
-        incomingByte = client.read();
-        switchcase(incomingByte, 0);
+        incomingByte = client.read(); //  então esses dados são recebidos
+        switchcase(incomingByte, 0);  //  posteriormente tratados
       }
     }
-    calcularHz();
-    if (enviarOdometriaClient == 1) {
+    calcularHz();                     // e disponibilizadas para os motores
+    if (enviarOdometriaClient == 1) { 
 
-      client.write('#');
-      client.println(odometriaDE);
-      client.println(odometriaDD);
-      client.println(odometriaTD);
+      client.write('#');          //Aqui é realizado o envio da odométria do robô, 
+      client.println(odometriaDE);//toda vês que uma sequência de dados 
+      client.println(odometriaDD);//é recebida ele realiza este envio
+      client.println(odometriaTD);// o '#' e '!' são utilizados como cabeçalhos
       client.println(odometriaTE);
       client.write('!');
     }
     enviarOdometriaClient = 0;
   }
 
-  Serial.println("Ending WIFI");
-  vTaskDelete( NULL );
+  Serial.println("Ending WIFI"); //caso essa tarefa seja encerrada por qualquer motivo 
+  vTaskDelete( NULL );   //esta mensagem é enviada para serialCom para possíveis depurações
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 void taskSerialCom( void * parameter )
@@ -152,7 +154,7 @@ void taskSerialCom( void * parameter )
   xLastWakeTime = xTaskGetTickCount();
   for (;;)
   {
-    vTaskDelayUntil( &xLastWakeTime, xDelay );// aplica um delay com controle de atraso
+    vTaskDelayUntil( &xLastWakeTime, xDelay );
 
     while (Serial.available() > 0)
     {
@@ -307,7 +309,7 @@ void taskStepperMDE( void * parameter)
     }
   }
   StepperMDE.stopMotor(); // desenergiza o motor
-  Serial.println("Motor 1 desligado"); // avisa pelo seria q a tarefa foi encerrada
+  Serial.println("Motor 1 desligado"); // avisa pelo serial que a tarefa foi encerrada
   vTaskDelete( NULL );//deleta a tarefa e libera o espaço utilizado
 }
 
@@ -634,4 +636,3 @@ void calcularHz(void)
     }
   }
 }
-
