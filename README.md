@@ -12,3 +12,10 @@ Desenvolvimento de firmware para o robô omnidirecional
 <br>StepperControl.cpp	<br/>
 <br>StepperControl.h<br/>	
 <br>controle_robo_omnidirecional.ino<br/>
+
+# MatLab
+<br>Os arquivos abaixo são relacionados aao matlab<br/>
+<br>Inicializar.m<br/>
+<br>Encerrar.m<br/>
+<br>odometria.m<br/>
+<br>main.m<br/>
